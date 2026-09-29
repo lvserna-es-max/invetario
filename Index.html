@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Inventario</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .contenedor {
+            width: 90%;
+            max-width: 900px;
+            margin: 30px auto;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        input {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #333;
+            color: white;
+        }
+
+        .eliminar {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Sistema de Inventario</h1>
+        <p>Aplicación web - Cloud Computing</p>
+    </header>
+
+    <div class="contenedor">
+
+        <h2>Agregar producto</h2>
+
+        <input type="text" id="nombre" placeholder="Nombre del producto">
+        <input type="number" id="cantidad" placeholder="Cantidad">
+        <input type="number" id="precio" placeholder="Precio">
+
+        <button onclick="agregarProducto()">Agregar</button>
+
+        <h2>Lista de productos</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+
+            <tbody id="tablaProductos">
+            </tbody>
+        </table>
+
+    </div>
+
+    <script>
+        let productos = [];
+        let contador = 1;
+
+        function agregarProducto() {
+
+            let nombre = document.getElementById("nombre").value;
+            let cantidad = document.getElementById("cantidad").value;
+            let precio = document.getElementById("precio").value;
+
+            if (nombre === "" || cantidad === "" || precio === "") {
+                alert("Complete todos los campos");
+                return;
+            }
+
+            let producto = {
+                id: contador,
+                nombre: nombre,
+                cantidad: cantidad,
+                precio: precio
+            };
+
+            productos.push(producto);
+            contador++;
+
+            mostrarProductos();
+
+            document.getElementById("nombre").value = "";
+            document.getElementById("cantidad").value = "";
+            document.getElementById("precio").value = "";
+        }
+
+        function mostrarProductos() {
+
+            let tabla = document.getElementById("tablaProductos");
+
+            tabla.innerHTML = "";
+
+            productos.forEach(function(producto) {
+
+                tabla.innerHTML += `
+                    <tr>
+                        <td>${producto.id}</td>
+                        <td>${producto.nombre}</td>
+                        <td>${producto.cantidad}</td>
+                        <td>Bs ${producto.precio}</td>
+                        <td>
+                            <button class="eliminar"
+                                onclick="eliminarProducto(${producto.id})">
+                                Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function eliminarProducto(id) {
+
+            productos = productos.filter(function(producto) {
+                return producto.id !== id;
+            });
+
+            mostrarProductos();
+        }
+    </script>
+
+</body>
+</html>
